@@ -46,7 +46,7 @@ router.post("/register", (req, res) => {
   });
 });
 
-router.post("/router", (req, res) => {
+router.post("/login", (req, res) => {
   const email = req.body.email;
   const password = req.body.password;
 
