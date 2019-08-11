@@ -12,18 +12,32 @@ const bcrypt = require("bcryptjs");
 const User = require("../../models/User");
 // For validating tokens.
 const passport = require("passport");
+// Validates registration form.
+const validateRegisterInput = require("../../validation/register");
+// Validates login form.
+const validateLoginInput = require("../../validation/login");
 
 // NB: The callback for every Express route requires a request and response as arguments.
 router.get("/test", (req, res) => res.json({ msg: "This is the users route" }));
 
 // Handles creation of new users.
 router.post("/register", (req, res) => {
+  // Runs validation method and deconstructs its return.
+  const { errors, isValid } = validateRegisterInput(req.body);
+
+  if (!isValid) {
+    // Returns errors if any.
+    return res.status(400).json(errors);
+  }
+
   const body = req.body;
   // First check to make sure this email is not already in use.
   User.findOne({ email: body.email }).then(user => {
     if (user) {
+      // Use the validations to send the error.
+      errors.email = "This email is already in use.";
       // Throw a 400 user if the email is already in use.
-      return res.status(400).json({ email: "This email is already in use." });
+      return res.status(400).json(errors);
     } else {
       // Else, create a new user.
       const newUser = new User({
@@ -56,14 +70,22 @@ router.post("/register", (req, res) => {
 
 // Handles logging in.
 router.post("/login", (req, res) => {
+  // Runs validation method and deconstructs its return.
+  const { errors, isValid } = validateLoginInput(req.body);
+
+  if (!isValid) {
+    // Return 400 if invalid form.
+    return res.status(400).json(errors);
+  }
+
   const email = req.body.email;
   const password = req.body.password;
 
   User.findOne({ email }).then(user => {
     if (!user) {
-      return res
-        .status(404)
-        .json({ email: `There is no user with the email: ${email}` });
+      // Use the validations to send the error.
+      errors.email = `There is no user with the email: ${email}`;
+      return res.status(404).json(errors);
     }
 
     bcrypt.compare(password, user.password).then(good => {
@@ -83,7 +105,9 @@ router.post("/login", (req, res) => {
           }
         );
       } else {
-        return res.status(400).json({ password: "Incorrect password" });
+        // Use the validations to send the error.
+        errors.password = "Incorrect password";
+        return res.status(400).json((errors.password = "Incorrect password"));
       }
     });
   });
