@@ -34,6 +34,8 @@ router.post("/register", (req, res) => {
 
       // Salt the password.
       bcrypt.genSalt(10, (error, salt) => {
+        // Throw an error if there is one.
+        if (error) throw error;
         bcrypt.hash(newUser.password, salt, (error, hash) => {
           // Throw an error if there is one.
           if (error) throw error;
