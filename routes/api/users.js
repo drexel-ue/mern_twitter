@@ -46,4 +46,25 @@ router.post("/register", (req, res) => {
   });
 });
 
+router.post("/router", (req, res) => {
+  const email = req.body.email;
+  const password = req.body.password;
+
+  User.findOne({ email }).then(user => {
+    if (!user) {
+      return res
+        .status(404)
+        .json({ email: `There is no user with the email: ${email}` });
+    }
+
+    bcrypt.compare(password, user.password).then(good => {
+      if (good) {
+        res.json(user);
+      } else {
+        return res.status(400).json({ password: "Incorrect password" });
+      }
+    });
+  });
+});
+
 module.exports = router;
