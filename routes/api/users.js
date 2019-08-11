@@ -1,3 +1,7 @@
+// Used to sign source of truth tokens for session and protected routes.
+const jwt = require("jsonwebtoken");
+// Provides access to secret.
+const keys = require("../../config/keys");
 // Needed to create the router.
 const express = require("express");
 // Handles directing requests to the desired handlers.
@@ -59,7 +63,20 @@ router.post("/login", (req, res) => {
 
     bcrypt.compare(password, user.password).then(good => {
       if (good) {
-        res.json(user);
+        const payload = { id: user.id, email: user.email, handle: user.handle };
+
+        jwt.sign(
+          payload,
+          keys.secretOrKey,
+          // Tell the key to expire in one hour
+          { expiresIn: 3600 },
+          (err, token) => {
+            res.json({
+              success: true,
+              token: "Bearer " + token
+            });
+          }
+        );
       } else {
         return res.status(400).json({ password: "Incorrect password" });
       }
