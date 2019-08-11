@@ -3,6 +3,7 @@
 
 # Ignore npm packages.
 /node_modules
+/frontend/node_modules
 
 # Ignore sensitive keys.
 /config/keys.js
