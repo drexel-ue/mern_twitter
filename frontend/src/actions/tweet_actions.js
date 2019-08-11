@@ -1,5 +1,8 @@
 import {
-    getTweets, getTweet, getUserTweets, writeTweet
+  getTweets,
+  getTweet,
+  getUserTweets,
+  writeTweet
 } from "../util/tweet_api_util";
 
 export const RECEIVE_TWEETS = "RECEIVE_TWEETS";
@@ -24,9 +27,9 @@ export const receiveNewTweet = tweet => ({
 export const fetchTweets = () => dispatch =>
   getTweets()
     .then(tweets => dispatch(receiveTweets(tweets)))
-        .catch(err => console.log(err));
-    
-export const fetchTweets = id => dispatch =>
+    .catch(err => console.log(err));
+
+export const fetchTweet = id => dispatch =>
   getTweet(id)
     .then(tweet => dispatch(receiveNewTweet(tweet)))
     .catch(err => console.log(err));
