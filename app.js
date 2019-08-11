@@ -1,6 +1,15 @@
+const mongoose = require("mongoose");
+
 // This creates a new Express server.
 const express = require("express");
 const app = express();
+const db = require("./config/keys").mongoURI;
+
+// Sets up connection to MondoDB.
+mongoose
+  .connect(db, { useNewUrlParser: true })
+  .then(() => console.log("Connected to MongoDB successfully"))
+  .catch(err => console.log(err));
 
 // Tells the server which potrt to run on.
 const port = process.env.PORT || 5000;
