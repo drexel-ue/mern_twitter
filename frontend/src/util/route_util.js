@@ -35,7 +35,7 @@ const Protected = ({ component: Component, loggedIn, ...rest }) => (
 // Use the isAuthenitcated slice of state to determine whether a user is logged in
 
 const mapStateToProps = state => ({ loggedIn: state.session.isAuthenticated });
-// For routes that only require the user is loggedin.
+// Renders component if not logged in.
 export const AuthRoute = withRouter(connect(mapStateToProps)(Auth));
-// For routes that require a legit token (database changes).
+// Renders component if logged in.
 export const ProtectedRoute = withRouter(connect(mapStateToProps)(Protected));
