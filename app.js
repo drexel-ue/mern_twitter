@@ -8,6 +8,9 @@ const users = require("./routes/api/users");
 const tweets = require("./routes/api/tweets");
 // Allows us to parse the json sent to the front end.
 const bodyParser = require("body-parser");
+// Verifies incoming request tokens to project routes.
+const passport = require('passport');
+require('./config/passport')(passport);
 
 // Sets up connection to MondoDB.
 mongoose
@@ -19,7 +22,11 @@ mongoose
 const port = process.env.PORT || 5000;
 
 // Sets up a basic route so that we can render some information on our page.
-app.get("/", (req, res) => res.send("Sistine Camels"));
+// app.get("/", (req, res) => res.send("Sistine Camels"));
+
+// Sets passport as the bouncer.
+app.use(passport.initialize());
+
 
 // Parse application/x-www-form-urlencoded.
 app.use(bodyParser.urlencoded({ extended: false }));

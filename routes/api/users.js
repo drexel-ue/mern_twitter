@@ -10,6 +10,8 @@ const router = express.Router();
 const bcrypt = require("bcryptjs");
 // User model.
 const User = require("../../models/User");
+// For validating tokens.
+const passport = require("passport");
 
 // NB: The callback for every Express route requires a request and response as arguments.
 router.get("/test", (req, res) => res.json({ msg: "This is the users route" }));
@@ -50,6 +52,7 @@ router.post("/register", (req, res) => {
   });
 });
 
+// Handles logging in.
 router.post("/login", (req, res) => {
   const email = req.body.email;
   const password = req.body.password;
@@ -83,5 +86,19 @@ router.post("/login", (req, res) => {
     });
   });
 });
+
+// Serves current user.
+router.get(
+  "/current",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) =>
+    res.json(
+      res.json({
+        id: req.user.id,
+        handle: req.user.handle,
+        email: req.user.email
+      })
+    )
+);
 
 module.exports = router;
