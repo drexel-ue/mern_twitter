@@ -9,3 +9,13 @@ export const setAuthToken = token => {
     delete axios.defaults.headers.common["Authorization"];
   }
 };
+
+// Initiates backend register handler.
+export const signup = userData => {
+  return axios.post("/api/users/register", userData);
+};
+
+// Initiates backend login handler.
+export const login = userData => {
+  return axios.post("/api/users/login", userData);
+};
