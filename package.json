@@ -1,0 +1,19 @@
+{
+  "name": "twitter",
+  "version": "1.0.0",
+  "description": "MERN stack replication of Twitter",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/drexel-ue/mern_twitter.git"
+  },
+  "author": "IKesh Pack <packappsforyou@gmail.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/drexel-ue/mern_twitter/issues"
+  },
+  "homepage": "https://github.com/drexel-ue/mern_twitter#readme"
+}
