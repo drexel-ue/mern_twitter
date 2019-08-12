@@ -9,8 +9,9 @@ const tweets = require("./routes/api/tweets");
 // Allows us to parse the json sent to the front end.
 const bodyParser = require("body-parser");
 // Verifies incoming request tokens to project routes.
-const passport = require('passport');
-require('./config/passport')(passport);
+const passport = require("passport");
+require("./config/passport")(passport);
+const path = require("path");
 
 // Sets up connection to MondoDB.
 mongoose
@@ -27,7 +28,6 @@ const port = process.env.PORT || 5000;
 // Sets passport as the bouncer.
 app.use(passport.initialize());
 
-
 // Parse application/x-www-form-urlencoded.
 app.use(bodyParser.urlencoded({ extended: false }));
 // Parse application/json.
@@ -39,3 +39,11 @@ app.use("/api/tweets", tweets);
 
 // Tells Express to start a socket and listen for connections on the path.
 app.listen(port, () => console.log(`Server is running on port ${port}`));
+
+// Tells our server to load the static build folder in production.
+if (process.env.NODE_ENV === "production") {
+  app.use(express.static("frontend/build"));
+  app.get("/", (req, res) => {
+    res.sendFile(path.resolve(__dirname, "frontend", "build", "index.html"));
+  });
+}
