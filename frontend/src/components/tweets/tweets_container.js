@@ -2,9 +2,9 @@ import { connect } from "react-redux";
 import { fetchTweets } from "../../actions/tweet_actions";
 import Tweets from "./tweets";
 
-const mapStateToProps = state => {
+const mapStateToProps = ({ entities }) => {
   return {
-    tweets: Object.values(state.tweets.all)
+    tweets: Object.values(entities.tweets.all)
   };
 };
 
