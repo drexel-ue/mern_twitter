@@ -2,10 +2,10 @@ import { connect } from "react-redux";
 import { composeTweet } from "../../actions/tweet_actions";
 import TweetCompose from "./tweet_compose";
 
-const mapStateToProps = state => {
+const mapStateToProps = ({ entities, session }) => {
   return {
-    currentUser: state.session.user,
-    newTweet: state.tweets.new
+    currentUser: session.user,
+    newTweet: entities.tweets.new
   };
 };
 
